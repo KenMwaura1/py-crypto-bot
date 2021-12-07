@@ -187,7 +187,7 @@ Project Link: [https://github.com/KenMwaura1/py-crypto-bot](https://github.com/K
 [issues-shield]: https://img.shields.io/github/issues/KenMwaura1/py-crypto-bot.svg?style=for-the-badge
 [issues-url]: https://github.com/KenMwaura1/py-crypto-bot/issues
 [license-shield]: https://img.shields.io/github/license/KenMwaura1/py-crypto-bot.svg?style=for-the-badge
-[license-url]: https://github.com/KenMwaura1/py-crypto-bot/blob/master/LICENSE.txt
+[license-url]: https://github.com/KenMwaura1/py-crypto-bot/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/kennedy-mwaura/
 [product-screenshot]: images/screenshot.png
