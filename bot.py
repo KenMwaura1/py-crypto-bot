@@ -11,6 +11,7 @@ RSI_OVERSOLD = 30
 TRADE_SYMBOL = "ETHUSD"
 TRADE_SIZE = 0.05
 closed_prices = []
+in_position = False
 
 
 def on_open(ws):
@@ -40,21 +41,32 @@ def on_message(ws, message):
         volume = candle['v']
         pprint(f"closed: {closed}")
         pprint(f"open: {open}")
-        closed_prices.append(closed)
+        closed_prices.append(float(closed))
 
         if len(closed_prices) > RSI_PERIOD:
-            closed_prices.pop(0)
-        rsi = talib.RSI(np.array(closed_prices), RSI_PERIOD)[-1]
-        pprint(f"rsi: {rsi}")
-
-        if rsi > RSI_OVERBOUGHT:
-            print("overbought")
-            ws.send(json.dumps({"method": "order", "params": {"symbol": TRADE_SYMBOL, "side": "BUY", "type": "LIMIT", "timeInForce": "GTC", "quantity": TRADE_SIZE, "price": open}, "id": 1}))
-        elif rsi < RSI_OVERSOLD:
-            print("oversold")
-            ws.send(json.dumps({"method": "order", "params": {"symbol": TRADE_SYMBOL, "side": "SELL", "type": "LIMIT", "timeInForce": "GTC", "quantity": TRADE_SIZE, "price": open}, "id": 1}))
-
-        closed_prices = []
+            # closed_prices.pop(0)
+            all_rsi = talib.RSI(np.array(closed_prices), RSI_PERIOD)
+            pprint(f"all_rsi: {all_rsi}")
+            last_rsi = all_rsi[-1]
+            if last_rsi > RSI_OVERBOUGHT:
+                if in_position:
+                    print("overbought, already in position")
+                    print("sell!")
+                else:
+                    print("overbought, but we dont have position")
+                ws.send(json.dumps({
+                    "event": "addChannel",
+                    "channel": f"{TRADE_SYMBOL}@trade"
+                }))
+            elif last_rsi < RSI_OVERSOLD:
+                if in_position:
+                    print("oversold but already in position")
+                else:
+                    print("buy!")
+                ws.send(json.dumps({
+                    "event": "addChannel",
+                    "channel": f"{TRADE_SYMBOL}@trade"
+                }))
 
 
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
