@@ -1,8 +1,15 @@
+import os
+
 import websocket as wb
 from pprint import pprint
 import json
 import talib
 import numpy as np
+from binance.client import Client
+from binance.enums import *
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BINANCE_SOCKET = "wss://stream.binance.com:9443/ws/ethusdt@kline_1m"
 RSI_PERIOD = 14
@@ -12,6 +19,10 @@ TRADE_SYMBOL = "ETHUSD"
 TRADE_SIZE = 0.05
 closed_prices = []
 in_position = False
+
+API_KEY = os.environ.get("API_KEY")
+API_SECRET = os.environ.get("API_SECRET")
+client = Client(API_KEY, API_SECRET, tld='us')
 
 
 def on_open(ws):
