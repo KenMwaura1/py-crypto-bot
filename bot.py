@@ -25,6 +25,22 @@ API_SECRET = os.environ.get("API_SECRET")
 client = Client(API_KEY, API_SECRET, tld='us')
 
 
+def order(side, size, order_type=ORDER_TYPE_MARKET, symbol=TRADE_SYMBOL):
+    # order_type = "MARKET" if side == "buy" else "LIMIT"
+    try:
+        order = client.create_order(
+            symbol=symbol,
+            side=side,
+            type=order_type,
+            quantity=size,
+        )
+        print(order)
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
 def on_open(ws):
     # ws.send("{'event':'addChannel','channel':'ethusdt@kline_1m'}")
     print("connected")
@@ -61,23 +77,21 @@ def on_message(ws, message):
             last_rsi = all_rsi[-1]
             if last_rsi > RSI_OVERBOUGHT:
                 if in_position:
-                    print("overbought, already in position")
-                    print("sell!")
+                    print("Overbought, sell!")
+                    success = order(SIDE_SELL, TRADE_SIZE, ORDER_TYPE_MARKET, TRADE_SYMBOL)
+                    if success:
+                        in_position = False
+
                 else:
                     print("overbought, but we dont have position")
-                ws.send(json.dumps({
-                    "event": "addChannel",
-                    "channel": f"{TRADE_SYMBOL}@trade"
-                }))
             elif last_rsi < RSI_OVERSOLD:
                 if in_position:
                     print("oversold but already in position")
                 else:
                     print("buy!")
-                ws.send(json.dumps({
-                    "event": "addChannel",
-                    "channel": f"{TRADE_SYMBOL}@trade"
-                }))
+                    success = order(SIDE_BUY, TRADE_SIZE, ORDER_TYPE_MARKET, TRADE_SYMBOL)
+                    if success:
+                        in_position = True
 
 
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
