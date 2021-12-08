@@ -63,7 +63,7 @@
 ![Py Crypto Bot](images/2021-12-08_01-32-crypto.png)
 
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `KenMwaura1`, `py-crypto-bot`, `Ken_Mwaura1`, `kennedy-mwaura`, `kemwaura`, `gmail.com`, `py-crypo-bot`, 
+<!--Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `KenMwaura1`, `py-crypto-bot`, `Ken_Mwaura1`, `kennedy-mwaura`, `kemwaura`, `gmail.com`, `py-crypo-bot`, -->
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
