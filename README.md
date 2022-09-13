@@ -71,7 +71,7 @@
 
 ### Built With
 
-* [Python 3.7.3](https://www.python.org/downloads/)
+* [Python 3.8+](https://www.python.org/downloads/)
 * [Binance WebSocket API](https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#klinecandlestick-streams)
 * [TA-Lib](https://mrjbq7.github.io/ta-lib/)
 
