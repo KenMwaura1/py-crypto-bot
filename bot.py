@@ -76,6 +76,7 @@ def on_message(ws, message):
             pprint(f"all_rsi: {all_rsi}")
             last_rsi = all_rsi[-1]
             if last_rsi > RSI_OVERBOUGHT:
+                global in_position
                 if in_position:
                     print("Overbought, sell!")
                     success = order(SIDE_SELL, TRADE_SIZE, ORDER_TYPE_MARKET, TRADE_SYMBOL)
