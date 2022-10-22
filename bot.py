@@ -68,6 +68,9 @@ def on_message(ws, message):
         volume = candle['v']
         pprint(f"closed: {closed}")
         pprint(f"open: {open}")
+        pprint(f"high: {high}")
+        pprint(f"low: {low}")
+        pprint(f"volume: {volume}")
         closed_prices.append(float(closed))
 
         if len(closed_prices) > RSI_PERIOD:
