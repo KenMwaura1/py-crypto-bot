@@ -17,7 +17,7 @@ pytz-deprecation-shim==0.1.0.post0
 regex==2021.11.10
 requests==2.26.0
 six==1.16.0
-TA-Lib==0.4.25
+# TA-Lib==0.4.25
 typing_extensions==4.3.0
 tzdata==2021.5
 tzlocal==4.1
