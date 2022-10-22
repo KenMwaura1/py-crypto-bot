@@ -94,6 +94,8 @@ def on_message(ws, message):
             session.rollback()
             print(e)
         session.close()
+
+        """
         if len(closed_prices) > RSI_PERIOD:
             # closed_prices.pop(0)
             all_rsi = talib.RSI(np.array(closed_prices), RSI_PERIOD)
@@ -117,6 +119,8 @@ def on_message(ws, message):
                     success = order(SIDE_BUY, TRADE_SIZE, ORDER_TYPE_MARKET, TRADE_SYMBOL)
                     if success:
                         in_position = True
+
+"""
 
 
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
