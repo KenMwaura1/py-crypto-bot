@@ -3,7 +3,7 @@ import os
 import websocket as wb
 from pprint import pprint
 import json
-# import talib
+import talib
 import numpy as np
 from binance.client import Client
 from binance.enums import *
