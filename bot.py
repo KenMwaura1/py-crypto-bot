@@ -3,13 +3,23 @@ import os
 import websocket as wb
 from pprint import pprint
 import json
-import talib
+# import talib
 import numpy as np
 from binance.client import Client
 from binance.enums import *
 from dotenv import load_dotenv
+from datetime import datetime
+
+from base_sql import Base, engine, Session
+from price_data_sql import CryptoPrice
 
 load_dotenv()
+
+# 1 generate database schema
+Base.metadata.create_all(engine)
+
+# 2 Create a new session
+session = Session()
 
 BINANCE_SOCKET = "wss://stream.binance.com:9443/ws/ethusdt@kline_1m"
 RSI_PERIOD = 14
@@ -72,7 +82,18 @@ def on_message(ws, message):
         pprint(f"low: {low}")
         pprint(f"volume: {volume}")
         closed_prices.append(float(closed))
-
+        # create price entries
+        print(TRADE_SYMBOL)
+        crypto = CryptoPrice(crypto_name=TRADE_SYMBOL, open_price=open, close_price=closed,
+                             high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
+        # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume, crypto.high_price, crypto.low_price)
+        try:
+            session.add(crypto)
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            print(e)
+        session.close()
         if len(closed_prices) > RSI_PERIOD:
             # closed_prices.pop(0)
             all_rsi = talib.RSI(np.array(closed_prices), RSI_PERIOD)
