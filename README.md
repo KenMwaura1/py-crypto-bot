@@ -80,7 +80,7 @@ This is an example of how to list things you need to use the software and how to
 
 * [Python 3.7+](https://www.python.org/downloads/)
 * Postgresql Database.
-  * This could either be installed locally or via  [docker](https://www.docker.com/).
+  * This could either be installed [locally](https://www.postgresql.org/) or via  [docker](https://www.docker.com/).
       This [article](https://blog.crunchydata.com/blog/easy-postgresql-12-and-pgadmin-4-setup-with-docker) is an awesome resource on how to get Postgresql and pgadmin4  installed as containers.
 
     Create a database `price_data`. Either using SQL or 3-party client like pgadmin4 or [dbeaver](https://dbeaver.io/)
