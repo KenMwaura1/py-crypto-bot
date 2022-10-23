@@ -12,7 +12,7 @@ jobs:
       matrix:
         python-version: [ 3.7, 3.8, 3.9]
         database-name:
-          - zoo_django_actions
+          - price_data
         database-password:
           - postgres
         database-user:
@@ -76,9 +76,9 @@ jobs:
         POSTGRES_DB_PORT: ${{ matrix.database-port }}
         POSTGRES_DB: ${{ matrix.database-name }}
       run: |
-        export DB=postgres://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
+        export DB=postgresql://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
     - name: Test Database
       run: | 
-        export DB=postgres://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
+        export DB=postgresql://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
         python base_sql.py 
         python database_insert.py 
