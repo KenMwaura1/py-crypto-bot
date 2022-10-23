@@ -1,0 +1,84 @@
+name: Crypto Bot DB Test
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.7, 3.8, 3.9]
+        database-name:
+          - price_data
+        database-password:
+          - postgres
+        database-user:
+          - postgres
+        database-host:
+          - 127.0.0.1
+        database-port:
+          - 5432
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: ${{ matrix.database-name }}
+          POSTGRES_USER: ${{ matrix.database-user }}
+          POSTGRES_PASSWORD: ${{ matrix.database-password }}
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options:
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+
+    steps:
+    - uses: actions/checkout@v3.1.0
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4.3.0
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Format with black
+      run: |
+        pip install black
+        # format the files with black
+        black .
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Sort imports
+      run: |
+        pip install isort
+        # stop the build if there are Python syntax errors or undefined names
+        isort .
+        isort --check --diff .
+    - name: Setup test database
+      env:
+        POSTGRES_DB_NAME: ${{ matrix.database-name }}
+        POSTGRES_USER: ${{ matrix.database-user }}
+        POSTGRES_PASSWORD: ${{ matrix.database-password }}
+        POSTGRES_DB_HOST: ${{ matrix.database-host }}
+        POSTGRES_DB_PORT: ${{ matrix.database-port }}
+        POSTGRES_DB: ${{ matrix.database-name }}
+      run: |
+        export DB=postgresql://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
+    - name: Test Database
+      run: | 
+        export DB=postgresql://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
+        python base_sql.py 
+        python database_insert.py 

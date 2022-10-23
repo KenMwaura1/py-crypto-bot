@@ -86,7 +86,8 @@ def on_message(ws, message):
         print(TRADE_SYMBOL)
         crypto = CryptoPrice(crypto_name=TRADE_SYMBOL, open_price=open, close_price=closed,
                              high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
-        # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume, crypto.high_price, crypto.low_price)
+        # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
+        # crypto.high_price, crypto.low_price)
         try:
             session.add(crypto)
             session.commit()
