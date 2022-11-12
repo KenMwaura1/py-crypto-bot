@@ -128,6 +128,6 @@ def on_message(ws, message):
 
 
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
-ws1 = wb.WebSocketApp(B_S, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
+# ws1 = wb.WebSocketApp(B_S, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
 ws.run_forever()
 # ws1.run_forever()
