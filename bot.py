@@ -21,7 +21,8 @@ Base.metadata.create_all(engine)
 # 2 Create a new session
 session = Session()
 
-BINANCE_SOCKET = "wss://stream.binance.com:9443/ws/ethusdt@kline_1m"
+BINANCE_SOCKET = "wss://stream.binance.com:9443/stream?streams=ethusdt@kline_1m/btcusdt@kline_1m"
+B_S = "wss://stream.binance.com:9443/stream?streams=btcusdt@aggTrade/btcusdt@depth"
 RSI_PERIOD = 14
 RSI_OVERBOUGHT = 70
 RSI_OVERSOLD = 30
@@ -68,9 +69,11 @@ def on_message(ws, message):
     message = json.loads(message)
     pprint(message)
     candle = message['k']
+    trade_symbol = message['s']
     is_candle_closed = candle['x']
     global closed_prices
     if is_candle_closed:
+        symbol = candle['s']
         closed = candle['c']
         open = candle['o']
         high = candle['h']
@@ -84,7 +87,7 @@ def on_message(ws, message):
         closed_prices.append(float(closed))
         # create price entries
         print(TRADE_SYMBOL)
-        crypto = CryptoPrice(crypto_name=TRADE_SYMBOL, open_price=open, close_price=closed,
+        crypto = CryptoPrice(crypto_name=symbol, open_price=open, close_price=closed,
                              high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
         # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
         # crypto.high_price, crypto.low_price)
@@ -125,4 +128,6 @@ def on_message(ws, message):
 
 
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
+ws1 = wb.WebSocketApp(B_S, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)
 ws.run_forever()
+# ws1.run_forever()
