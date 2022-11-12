@@ -22,6 +22,7 @@
 
   <p align="center">
     Using Binance WebSocket API to get real-time price data for cryptocurrencies. Store the data in a Postgres DB on candle close. Using the TA-Lib library to calculate the RSI and execute buy/sell orders.
+    Currently supported pairs are ETH/USDT and BTC/USDT.
     <br />
     <br />
   </p>
