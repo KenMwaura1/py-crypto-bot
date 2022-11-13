@@ -2,7 +2,7 @@ from sqlalchemy import Date, Column, Integer, String, Float
 
 from base_sql import Base
 
-#          closed = candle['c']
+#         closed = candle['c']
 #         open = candle['o']
 #         high = candle['h']
 #         low = candle['l']
