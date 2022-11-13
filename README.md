@@ -56,6 +56,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+[Link to accompanying article](https://dev.to/ken_mwaura1/crypto-data-bot-using-python-binance-websockets-and-postgresql-db-5fnd) :pencil2:
+
+
+
 ![Py Crypto Bot](images/2021-12-08_01-32-crypto.png)
 
 ### Sample image of data stored in DB 
