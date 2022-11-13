@@ -9,6 +9,7 @@ from binance.enums import *
 from dotenv import load_dotenv
 from datetime import datetime
 from database_insert import create_table
+from base_sql import Session
 from price_data_sql import CryptoPrice
 
 load_dotenv()
@@ -16,7 +17,10 @@ load_dotenv()
 # this functions creates the table if it does not exist
 create_table()
 
-BINANCE_SOCKET = "wss://stream.binance.com:9443/stream?streams=ethusdt@kline_1m/btcusdt@kline_1m"
+# create a session
+session = Session()
+
+BINANCE_SOCKET = "wss://stream.binance.com:9443/stream?streams=ethusdt@kline_3m/btcusdt@kline_3m"
 B_S = "wss://stream.binance.com:9443/stream?streams=btcusdt@aggTrade/btcusdt@depth"
 RSI_PERIOD = 14
 RSI_OVERBOUGHT = 70
@@ -49,7 +53,7 @@ def order(side, size, order_type=ORDER_TYPE_MARKET, symbol=TRADE_SYMBOL):
 
 def on_open(ws):
     # ws.send("{'event':'addChannel','channel':'ethusdt@kline_1m'}")
-    print("connected")
+    print("connection opened")
 
 
 def on_close(ws):
