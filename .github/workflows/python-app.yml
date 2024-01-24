@@ -1,36 +1,54 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Python application
+name: Python Application Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev","main" ]
   pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches: [ "dev","main" ]
 
 jobs:
-  build:
 
+  build:
+    defaults:
+      run:
+        working-directory: .
+  
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.8, 3.9, "3.10"]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+      - name: Lint with Black
+        uses: psf/black@stable
+        with:
+          options: "--exclude=tests/"
+          src: .
+      - name: Lint with Isort
+        run: |
+            pip install isort
+            isort . --profile black
+
+  lint:
+        runs-on: ubuntu-latest 
+        steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-python@v4
+          with:
+            python-version: 3.9
+        - run: pip install ruff
+        - run: | 
+            ruff check . --exclude "tests/ 
+            ruff --fix . --exclude "tests/
+        - uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+            commit_message: 'style fixes by ruff'
