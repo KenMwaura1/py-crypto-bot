@@ -90,12 +90,8 @@ def on_message(ws, message):
                              high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
         # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
         # crypto.high_price, crypto.low_price)
-        try:
-            session.add(crypto)
-            session.commit()
-        except Exception as e:
-            session.rollback()
-            print(e)
+        session.add(crypto)
+        session.commit()
         session.close()
 
         """
