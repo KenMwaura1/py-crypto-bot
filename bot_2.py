@@ -67,45 +67,53 @@ def on_error(ws, error):
 
 def on_message(ws, message):
     message = json.loads(message)
+    session = Session()
     # pprint(message)
     candle = message['data']['k']
-    trade_symbol = message['s']
+    pprint(candle)
+    trade_symbol = candle['s']
     is_candle_closed = candle['x']
     global closed_prices
-    if is_candle_closed:
-        symbol = candle['s']
-        closed = candle['c']
-        open = candle['o']
-        high = candle['h']
-        low = candle['l']
-        volume = candle['v']
-        pprint(f"closed: {closed}")
-        pprint(f"open: {open}")
-        pprint(f"high: {high}")
-        pprint(f"low: {low}")
-        pprint(f"volume: {volume}")
-        closed_prices.append(float(closed))
-        # create price entries
-        print(trade_symbol)
-        crypto = CryptoPrice(crypto_name=symbol, open_price=open, close_price=closed,
-                             high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
-        # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
-        # crypto.high_price, crypto.low_price)
-        session.add(crypto)
-        session.commit()
-        session.close()
-        # add message to Redis queue
-        message_data = {
-            "symbol": symbol,
-            "open_price": open,
-            "close_price": closed,
-            "high_price": high,
-            "low_price": low,
-            "volume": volume,
-            "time": str(crypto.time)
-        }
-        r.lpush("crypto", json.dumps(message_data))
-        print(closed_prices)
+    # if is_candle_closed:
+    symbol = candle['s']
+    closed = candle['c']
+    open = candle['o']
+    high = candle['h']
+    low = candle['l']
+    volume = candle['v']
+    pprint(f"closed: {closed}")
+    pprint(f"open: {open}")
+    pprint(f"high: {high}")
+    pprint(f"low: {low}")
+    pprint(f"volume: {volume}")
+    closed_prices.append(float(closed))
+    # create price entries
+    print(trade_symbol)
+    crypto = CryptoPrice(crypto_name=symbol, open_price=float(open), close_price=float(closed),
+                            high_price=float(high), low_price=float(low), volume=float(volume), time=datetime.utcnow())
+    print(f'Time: {crypto.time}, Name: {crypto.crypto_name}, Close Price: {crypto.close_price}, Open Price: {crypto.open_price}, Volume: {crypto.volume}')
+    
+    with session.open() as session:
+        try: 
+            session.add(crypto)
+            session.commit()
+        except Exception as e:
+            print(e)
+            session.rollback()
+            session.close()
+    
+    # add message to Redis queue
+    message_data = {
+        "symbol": symbol,
+        "open_price": open,
+        "close_price": closed,
+        "high_price": high,
+        "low_price": low,
+        "volume": volume,
+        "time": str(crypto.time)
+    }
+    r.lpush("crypto", json.dumps(message_data))
+    print(closed_prices)
 
 
 # create a WebSocketApp instance
