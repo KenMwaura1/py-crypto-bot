@@ -47,8 +47,8 @@ jobs:
             python-version: 3.9
         - run: pip install ruff
         - run: | 
-            ruff check . --exclude "tests/" 
-            ruff --fix . --exclude "tests/"
+            ruff check .
+            ruff --fix .
         - uses: stefanzweifel/git-auto-commit-action@v4
           with:
             commit_message: 'style fixes by ruff'
