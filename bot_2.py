@@ -3,9 +3,7 @@ import websocket as wb
 from pprint import pprint
 import json
 import redis
-import time
-# import talib
-# import numpy as np
+import os
 from binance.client import Client
 from binance.enums import *
 from dotenv import load_dotenv
@@ -40,8 +38,7 @@ API_SECRET = os.environ.get("API_SECRET")
 client = Client(API_KEY, API_SECRET, tld='us')
 
 
-def order(side, size, order_type=ORDER_TYPE_MARKET, symbol=TRADE_SYMBOL):
-    # order_type = "MARKET" if side == "buy" else "LIMIT"
+def order(side, size, order_type=Client.ORDER_TYPE_MARKET, symbol=TRADE_SYMBOL):
     try:
         order = client.create_order(
             symbol=symbol,
@@ -57,7 +54,6 @@ def order(side, size, order_type=ORDER_TYPE_MARKET, symbol=TRADE_SYMBOL):
 
 
 def on_open(ws):
-    # ws.send("{'event':'addChannel','channel':'ethusdt@kline_1m'}")
     print("connection opened")
 
 
@@ -71,8 +67,8 @@ def on_error(ws, error):
 
 def on_message(ws, message):
     message = json.loads(message)
-    pprint(message)
-    candle = message['k']
+    # pprint(message)
+    candle = message['data']['k']
     trade_symbol = message['s']
     is_candle_closed = candle['x']
     global closed_prices
@@ -90,7 +86,7 @@ def on_message(ws, message):
         pprint(f"volume: {volume}")
         closed_prices.append(float(closed))
         # create price entries
-        print(TRADE_SYMBOL)
+        print(trade_symbol)
         crypto = CryptoPrice(crypto_name=symbol, open_price=open, close_price=closed,
                              high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
         # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
