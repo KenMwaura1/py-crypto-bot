@@ -66,35 +66,40 @@ def on_error(ws, error):
 
 def on_message(ws, message):
     message = json.loads(message)
-    pprint(message)
-    candle = message['k']
-    trade_symbol = message['s']
+    # pprint(message)
+    candle = message['data']['k']
+    pprint(candle)
+    trade_symbol = candle['s']
     is_candle_closed = candle['x']
     global closed_prices
-    if is_candle_closed:
-        symbol = candle['s']
-        closed = candle['c']
-        open = candle['o']
-        high = candle['h']
-        low = candle['l']
-        volume = candle['v']
-        pprint(f"closed: {closed}")
-        pprint(f"open: {open}")
-        pprint(f"high: {high}")
-        pprint(f"low: {low}")
-        pprint(f"volume: {volume}")
-        closed_prices.append(float(closed))
-        # create price entries
-        print(TRADE_SYMBOL)
-        crypto = CryptoPrice(crypto_name=symbol, open_price=open, close_price=closed,
-                             high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
-        # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
-        # crypto.high_price, crypto.low_price)
-        session.add(crypto)
-        session.commit()
-        session.close()
+    # if is_candle_closed:
+    symbol = candle['s']
+    pprint(symbol)
+    closed = candle['c']
+    open = candle['o']
+    high = candle['h']
+    low = candle['l']
+    volume = candle['v']
+    interval = candle['i']
+    pprint(f"closed: {closed}")
+    pprint(f"open: {open}")
+    pprint(f"high: {high}")
+    pprint(f"low: {low}")
+    pprint(f"volume: {volume}")
+    pprint(f"interval: {interval}")
+    pprint(f"is_candle_closed: {is_candle_closed}")
+    closed_prices.append(float(closed))
+    # create price entries
+    # print(TRADE_SYMBOL)
+    crypto = CryptoPrice(crypto_name=symbol, open_price=open, close_price=closed,
+                            high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
+    # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
+    # crypto.high_price, crypto.low_price)
+    session.add(crypto)
+    session.commit()
+    session.close()
 
-        """
+"""
         if len(closed_prices) > RSI_PERIOD:
             # closed_prices.pop(0)
             all_rsi = talib.RSI(np.array(closed_prices), RSI_PERIOD)
