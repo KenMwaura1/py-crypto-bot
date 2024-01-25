@@ -1,12 +1,4 @@
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Python application](https://github.com/KenMwaura1/py-crypto-bot/actions/workflows/python-app.yml/badge.svg)](https://github.com/KenMwaura1/py-crypto-bot/actions/workflows/python-app.yml)
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -172,7 +164,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
- [@Ken_Mwaura1](https://twitter.com/Ken_Mwaura1) - kemwaura@gmail.com
+ [@Ken_Mwaura1](https://twitter.com/Ken_Mwaura1) - <kemwaura@gmail.com>
 
 Project Link: [https://github.com/KenMwaura1/py-crypto-bot](https://github.com/KenMwaura1/py-crypto-bot)
 
