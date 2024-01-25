@@ -10,94 +10,109 @@
 <!-- PROJECT LOGO -->
 <br />
 
-<h3 align="center">Py Crypto Bot</h3>
+<h2 align="center">Py Crypto Bot</h2>
 
   <p align="center">
-    Using Binance WebSocket API to get real-time price data for cryptocurrencies. Store the data in a Postgres DB on candle close. Using the TA-Lib library to calculate the RSI and execute buy/sell orders.
-    Currently supported pairs are ETH/USDT and BTC/USDT.
-    <br />
-    <br />
+      Using Binance WebSocket API to get real-time price data for cryptocurrencies. Store the data in a Postgres DB on candle close. Using the TA-Lib library to calculate the RSI and execute buy/sell orders.
+      Currently supported pairs are ETH/USDT and BTC/USDT.
+      <br />
+      <br />
   </p>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+  <!-- TABLE OF CONTENTS -->
+  <details>
+    <summary>Table of Contents</summary>
+    <ol>
+      <li>
+        <a href="#about-the-project">About The Project</a>
+        <ul>
+          <li><a href="#built-with">Built With</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#getting-started">Getting Started</a>
+        <ul>
+          <li><a href="#prerequisites">Prerequisites</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#running-with-docker">Running with Docker</a></li> <!-- Added section -->
+        </ul>
+      </li>
+      <li><a href="#usage">Usage</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#contributing">Contributing</a></li>
+      <li><a href="#license">License</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#acknowledgments">Acknowledgments</a></li>
+    </ol>
+  </details>
 
-<!-- ABOUT THE PROJECT -->
+  <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Py Crypto Bot](images/2021-12-08_01-32-crypto.png)
+  ![Py Crypto Bot](images/2021-12-08_01-32-crypto.png)
 
-<!--Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `KenMwaura1`, `py-crypto-bot`, `Ken_Mwaura1`, `kennedy-mwaura`, `kemwaura`, `gmail.com`, `py-crypo-bot`, -->
+  <!--Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `KenMwaura1`, `py-crypto-bot`, `Ken_Mwaura1`, `kennedy-mwaura`, `kemwaura`, `gmail.com`, `py-crypo-bot`, -->
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+  <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-* [Python 3.8+](https://www.python.org/downloads/)
-* [Binance WebSocket API](https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#klinecandlestick-streams)
-* [TA-Lib](https://mrjbq7.github.io/ta-lib/)
+  * [Python 3.8+](https://www.python.org/downloads/)
+  * [Binance WebSocket API](https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#klinecandlestick-streams)
+  * [TA-Lib](https://mrjbq7.github.io/ta-lib/)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+  <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
+  <!-- GETTING STARTED -->
 ## Getting Started
 
-To get started, you'll need to install the following:
+  To get started, you'll need to install the following:
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+  This is an example of how to list things you need to use the software and how to install them.
 
-* [Python 3.7+](https://www.python.org/downloads/)
-* Postgresql Database.
-  * This could either be installed [locally](https://www.postgresql.org/) or via  [docker](https://www.docker.com/).
-      This [article](https://blog.crunchydata.com/blog/easy-postgresql-12-and-pgadmin-4-setup-with-docker) is an awesome resource on how to get Postgresql and pgadmin4  installed as containers.
+  * [Python 3.7+](https://www.python.org/downloads/)
+  * Postgresql Database.
+    * This could either be installed [locally](https://www.postgresql.org/) or via  [docker](https://www.docker.com/).
+        This [article](https://blog.crunchydata.com/blog/easy-postgresql-12-and-pgadmin-4-setup-with-docker) is an awesome resource on how to get Postgresql and pgadmin4  installed as containers.
 
-    Create a database `price_data`. Either using SQL or 3-party client like pgadmin4 or [dbeaver](https://dbeaver.io/)
+      Create a database `price_data`. Either using SQL or 3-party client like pgadmin4 or [dbeaver](https://dbeaver.io/)
 
 ### Installation
 
-1. Get a free API Key at [Binance](https://www.binance.com).
-2. Clone the repo
+  1. Get a free API Key at [Binance](https://www.binance.com).
+  2. Clone the repo
 
-   ```sh
-   git clone https://github.com/KenMwaura1/py-crypto-bot.git
-   ```
+     ```sh
+     git clone https://github.com/KenMwaura1/py-crypto-bot.git
+     ```
 
-3. Create a virtual environment
+  3. Create a virtual environment
 
-   ```sh
-   python -m venv venv
-   ```
+     ```sh
+     python3 -m venv venv
+     ```
 
-4. Activate the virtual environment
+  4. Activate the virtual environment
 
-   ```sh
-   source venv/bin/activate
-   ```
+     ```sh
+     source venv/bin/activate
+     ```
+
+      4b. For Windows users
+
+     ```sh
+      venv\Scripts\activate
+     ```
+
+     4c. For Fish shell users
+
+     ```sh
+      source venv/bin/activate.fish
+      ```
+
+  <p align="right">(<a href="#top">back to top</a>)</p>
 
 5. Install the dependencies
 
@@ -122,8 +137,30 @@ This is an example of how to list things you need to use the software and how to
 7. Run the bot
 
    ```sh
-   python bot.py
+   python bot_2.py
    ```
+
+### Running with Docker
+
+  To run the Py Crypto Bot using Docker, follow these steps:
+
+  1. Build the Docker image
+
+     ```sh
+     docker build -t py-crypto-bot .
+     ```
+
+  2. Run the Docker container using docker-compose
+
+     ```sh
+     docker-compose up -d
+     ```
+
+  The following containers are used:
+
+  - `py-crypto-bot`: The main container running the Py Crypto Bot application.
+  - `postgres`: The container running the PostgreSQL database.
+  - `redis`: The container running the Redis database.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -177,3 +214,4 @@ Project Link: [https://github.com/KenMwaura1/py-crypto-bot](https://github.com/K
 [license-url]: https://github.com/KenMwaura1/py-crypto-bot/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/kennedy-mwaura/
+*
