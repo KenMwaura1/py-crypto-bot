@@ -21,8 +21,7 @@ class CryptoPrice(Base):
     volume = Column(Float())
     time = Column(Date())
 
-    def __int__(self, crypto_name, close_price, open_price,
-                high_price, low_price, volume, time):
+    def __int__(self, crypto_name, close_price, open_price, high_price, low_price, volume, time):
         self.crypto_name = crypto_name
         self.open_price = open_price
         self.close_price = close_price
