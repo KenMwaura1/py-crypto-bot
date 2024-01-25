@@ -1,0 +1,27 @@
+version: '3'
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mydatabase
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=price_data
+
+  redis:
+    image: redis
