@@ -47,7 +47,7 @@ jobs:
             python-version: 3.9
         - run: pip install ruff
         - run: | 
-            ruff check . 
+            # ruff check . 
             ruff check . --fix
             ruff format .
         - uses: stefanzweifel/git-auto-commit-action@v4
