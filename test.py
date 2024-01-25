@@ -14,7 +14,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime
 load_dotenv()
 
 # create engine
-engine = create_engine(os.getenv('DB'))
+engine = create_engine(os.getenv("DB"))
 
 # create session
 Session = sessionmaker(bind=engine)
@@ -26,7 +26,7 @@ Base = declarative_base()
 
 # create table
 class Crypto(Base):
-    __tablename__ = 'crypto'
+    __tablename__ = "crypto"
     id = Column(Integer, primary_key=True)
     symbol = Column(String)
     price = Column(Float)
@@ -37,7 +37,7 @@ class Crypto(Base):
 Base.metadata.create_all(engine)
 
 # create client
-client = Client(os.getenv('BINANCE_API_KEY'), os.getenv('BINANCE_API_SECRET'))
+client = Client(os.getenv("BINANCE_API_KEY"), os.getenv("BINANCE_API_SECRET"))
 
 # create socket manager
 bm = BinanceSocketManager(client)
@@ -46,20 +46,20 @@ bm = BinanceSocketManager(client)
 # process message
 def process_message(msg):
     print(msg)
-    if msg['e'] == 'error':
-        print(msg['m'])
+    if msg["e"] == "error":
+        print(msg["m"])
         return
-    symbol = msg['s']
-    price = float(msg['c'])
-    time = msg['E']
+    symbol = msg["s"]
+    price = float(msg["c"])
+    time = msg["E"]
     crypto = Crypto(symbol=symbol, price=price, time=time)
     session.add(crypto)
     session.commit()
-    session.close() # close session after each message
+    session.close()  # close session after each message
 
 
 # create socket
-socket = bm.symbol_ticker_socket('BTCUSDT')
+socket = bm.symbol_ticker_socket("BTCUSDT")
 
 # start socket
 bm.start()

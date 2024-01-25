@@ -15,7 +15,7 @@ from price_data_sql import CryptoPrice
 load_dotenv()
 
 # connect to Redis
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.Redis(host="localhost", port=6379, db=0)
 
 # this functions creates the table if it does not exist
 create_table()
@@ -35,7 +35,7 @@ in_position = False
 
 API_KEY = os.environ.get("API_KEY")
 API_SECRET = os.environ.get("API_SECRET")
-client = Client(API_KEY, API_SECRET, tld='us')
+client = Client(API_KEY, API_SECRET, tld="us")
 
 
 def order(side, size, order_type=Client.ORDER_TYPE_MARKET, symbol=TRADE_SYMBOL):
@@ -69,18 +69,18 @@ def on_message(ws, message):
     message = json.loads(message)
     session = Session()
     # pprint(message)
-    candle = message['data']['k']
+    candle = message["data"]["k"]
     pprint(candle)
-    trade_symbol = candle['s']
-    is_candle_closed = candle['x']
+    trade_symbol = candle["s"]
+    is_candle_closed = candle["x"]
     global closed_prices
     # if is_candle_closed:
-    symbol = candle['s']
-    closed = candle['c']
-    open = candle['o']
-    high = candle['h']
-    low = candle['l']
-    volume = candle['v']
+    symbol = candle["s"]
+    closed = candle["c"]
+    open = candle["o"]
+    high = candle["h"]
+    low = candle["l"]
+    volume = candle["v"]
     pprint(f"closed: {closed}")
     pprint(f"open: {open}")
     pprint(f"high: {high}")
@@ -89,19 +89,28 @@ def on_message(ws, message):
     closed_prices.append(float(closed))
     # create price entries
     print(trade_symbol)
-    crypto = CryptoPrice(crypto_name=symbol, open_price=float(open), close_price=float(closed),
-                            high_price=float(high), low_price=float(low), volume=float(volume), time=datetime.utcnow())
-    print(f'Time: {crypto.time}, Name: {crypto.crypto_name}, Close Price: {crypto.close_price}, Open Price: {crypto.open_price}, Volume: {crypto.volume}')
-    
+    crypto = CryptoPrice(
+        crypto_name=symbol,
+        open_price=float(open),
+        close_price=float(closed),
+        high_price=float(high),
+        low_price=float(low),
+        volume=float(volume),
+        time=datetime.utcnow(),
+    )
+    print(
+        f"Time: {crypto.time}, Name: {crypto.crypto_name}, Close Price: {crypto.close_price}, Open Price: {crypto.open_price}, Volume: {crypto.volume}"
+    )
+
     with session.open() as session:
-        try: 
+        try:
             session.add(crypto)
             session.commit()
         except Exception as e:
             print(e)
             session.rollback()
             session.close()
-    
+
     # add message to Redis queue
     message_data = {
         "symbol": symbol,
@@ -110,7 +119,7 @@ def on_message(ws, message):
         "high_price": high,
         "low_price": low,
         "volume": volume,
-        "time": str(crypto.time)
+        "time": str(crypto.time),
     }
     r.lpush("crypto", json.dumps(message_data))
     print(closed_prices)

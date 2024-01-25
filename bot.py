@@ -2,6 +2,7 @@ import os
 import websocket as wb
 from pprint import pprint
 import json
+
 # import talib
 # import numpy as np
 from binance.client import Client
@@ -32,7 +33,7 @@ in_position = False
 
 API_KEY = os.environ.get("API_KEY")
 API_SECRET = os.environ.get("API_SECRET")
-client = Client(API_KEY, API_SECRET, tld='us')
+client = Client(API_KEY, API_SECRET, tld="us")
 
 
 def order(side, size, order_type=ORDER_TYPE_MARKET, symbol=TRADE_SYMBOL):
@@ -67,20 +68,20 @@ def on_error(ws, error):
 def on_message(ws, message):
     message = json.loads(message)
     # pprint(message)
-    candle = message['data']['k']
+    candle = message["data"]["k"]
     pprint(candle)
-    trade_symbol = candle['s']
-    is_candle_closed = candle['x']
+    trade_symbol = candle["s"]
+    is_candle_closed = candle["x"]
     global closed_prices
     # if is_candle_closed:
-    symbol = candle['s']
+    symbol = candle["s"]
     pprint(symbol)
-    closed = candle['c']
-    open = candle['o']
-    high = candle['h']
-    low = candle['l']
-    volume = candle['v']
-    interval = candle['i']
+    closed = candle["c"]
+    open = candle["o"]
+    high = candle["h"]
+    low = candle["l"]
+    volume = candle["v"]
+    interval = candle["i"]
     pprint(f"closed: {closed}")
     pprint(f"open: {open}")
     pprint(f"high: {high}")
@@ -91,13 +92,21 @@ def on_message(ws, message):
     closed_prices.append(float(closed))
     # create price entries
     # print(TRADE_SYMBOL)
-    crypto = CryptoPrice(crypto_name=symbol, open_price=open, close_price=closed,
-                            high_price=high, low_price=low, volume=volume, time=datetime.utcnow())
+    crypto = CryptoPrice(
+        crypto_name=symbol,
+        open_price=open,
+        close_price=closed,
+        high_price=high,
+        low_price=low,
+        volume=volume,
+        time=datetime.utcnow(),
+    )
     # print(crypto.time, crypto.crypto_name, crypto.close_price, crypto.open_price, crypto.volume,
     # crypto.high_price, crypto.low_price)
     session.add(crypto)
     session.commit()
     session.close()
+
 
 """
         if len(closed_prices) > RSI_PERIOD:
